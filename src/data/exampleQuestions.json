@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "questionEn": "What is your happiest childhood memory?",
+    "questionEs": "¿Cuál es tu recuerdo más feliz de la infancia?"
+  },
+  {
+    "id": "2",
+    "questionEn": "If you could have any superpower, which one would you choose and why?",
+    "questionEs": "Si pudieras tener cualquier superpoder, ¿cuál elegirías y por qué?"
+  },
+  {
+    "id": "3",
+    "questionEn": "What are you most passionate about in life?",
+    "questionEs": "¿Qué es lo que más te apasiona en la vida?"
+  },
+  {
+    "id": "4",
+    "questionEn": "What is the best advice you've ever received and how has it impacted you?",
+    "questionEs": "¿Cuál es el mejor consejo que has recibido y cómo te ha impactado?"
+  },
+  {
+    "id": "5",
+    "questionEn": "If you could travel to any place in the world, where would you go first?",
+    "questionEs": "Si pudieras viajar a cualquier lugar del mundo, ¿dónde irías primero?"
+  }
+]
