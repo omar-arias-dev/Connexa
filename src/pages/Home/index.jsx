@@ -4,13 +4,18 @@ import { Button, Text, View } from "react-native";
 import { QuestionsContext } from '../../contexts/QuestionsContext';
 
 export default function Home({ navigation }) {
-    const { language, setLanguage, favoritesRemove } = useContext(QuestionsContext);
+    const { language, setLanguage, favorites, setShowFavorites, handleRemoveAllFavorites } = useContext(QuestionsContext);
 
     const handleLanguageChange = () => {
         setLanguage(language === "Es" ? "En" : language === "En" ? "Es" : "En")
     }
 
     const handleQuestionsPageNavigate = () => {
+        navigation.navigate("Questions");
+    }
+
+    const handleFavoriteQuestionsPageNavigate = () => {
+        setShowFavorites(true);
         navigation.navigate("Questions");
     }
 
@@ -26,8 +31,13 @@ export default function Home({ navigation }) {
                 onPress={() => handleQuestionsPageNavigate()}
             />
             <Button
+                title="Favorites"
+                onPress={() => handleFavoriteQuestionsPageNavigate()}
+                disabled={favorites.length === 0}
+            />
+            <Button
                 title='remove'
-                onPress={async () => favoritesRemove()}
+                onPress={async () => handleRemoveAllFavorites()}
             />
         </View>
     )

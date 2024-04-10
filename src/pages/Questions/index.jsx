@@ -12,6 +12,8 @@ export default function Questions({ navigation }) {
         currentCuestion,
         favorites,
         setFavorites,
+        showFavorites,
+        setShowFavorites,
         isFirst,
         isLast,
     } = useContext(QuestionsContext);
@@ -28,6 +30,7 @@ export default function Questions({ navigation }) {
 
     useEffect(() => {
         navigation.setOptions({
+            title: showFavorites ? "Favorites" : "Questions",
             headerLeft: () => (
                 <Button
                     title="Back"
@@ -46,6 +49,7 @@ export default function Questions({ navigation }) {
         navigation.goBack();
         setCurrentCuestionIndex(0);
         setIsFavorite(false);
+        showFavorites && setShowFavorites(false);
     }
 
     const handleQuestionPreviousChange = () => {
@@ -73,7 +77,7 @@ export default function Questions({ navigation }) {
                     await setFavorites(favoritesCopy);
                 }
             } else {
-                console.log("Store elemento también creando con key");
+                console.log("Favorites no exists.");
             }
         } catch(error) {
             console.error(error);
