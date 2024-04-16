@@ -14,6 +14,7 @@ export default function Questions({ navigation }) {
         setFavorites,
         showFavorites,
         setShowFavorites,
+        handleRemoveAllFavorites,
         isFirst,
         isLast,
     } = useContext(QuestionsContext);
@@ -103,6 +104,18 @@ export default function Questions({ navigation }) {
                 onPress={() => handleQuestionNextChange()}
                 disabled={isLast()}
             />
+            {
+                showFavorites && (
+                    <Button
+                        title="Delete my Favorite Questions"
+                        onPress={async () => {
+                            await handleRemoveAllFavorites();
+                            await navigation.goBack();
+                            setShowFavorites(false);
+                        }}
+                    />
+                )
+            }
         </View>
     );
 }

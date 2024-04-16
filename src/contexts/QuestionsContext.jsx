@@ -3,6 +3,8 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import EXAMPLE_QUESTIONS from "./../data/exampleQuestions.json";
 
+import { shuffleArray } from "./service";
+
 const QuestionsContext = React.createContext(null);
 
 const QuestionsProvider = ({ children }) => {
@@ -13,14 +15,20 @@ const QuestionsProvider = ({ children }) => {
     const currentCuestion = currentCuestionsList[currentCuestionIndex];
     const [favorites, setFavorites] = React.useState([]);
     const [showFavorites, setShowFavorites] = React.useState(false);
+    const [random, setRandom] = React.useState(false);
 
     React.useEffect(() => {
         getStoredFavorites();
     }, [currentCuestion]);
 
     React.useEffect(() => {
-        showFavorites ? setCurrentCuestionsList(EXAMPLE_QUESTIONS.filter((favorite) => favorites.includes(favorite.id))) : setCurrentCuestionsList(EXAMPLE_QUESTIONS);
-    }, [showFavorites]);
+        if(showFavorites) {
+            const questions = EXAMPLE_QUESTIONS.filter((favorite) => favorites.includes(favorite.id));
+            setCurrentCuestionsList(random ? shuffleArray(questions) : questions);
+        } else {
+            setCurrentCuestionsList(random ? shuffleArray(EXAMPLE_QUESTIONS) : EXAMPLE_QUESTIONS);
+        }
+    }, [showFavorites, random]);
 
     const getStoredFavorites = async () => {
         const storedFavorites = await getItem();
@@ -52,6 +60,8 @@ const QuestionsProvider = ({ children }) => {
                 showFavorites,
                 setShowFavorites,
                 setFavorites,
+                random,
+                setRandom,
                 isFirst,
                 isLast,
                 handleRemoveAllFavorites,

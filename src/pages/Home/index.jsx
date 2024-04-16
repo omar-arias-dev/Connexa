@@ -4,7 +4,7 @@ import { Button, Text, View } from "react-native";
 import { QuestionsContext } from '../../contexts/QuestionsContext';
 
 export default function Home({ navigation }) {
-    const { language, setLanguage, favorites, setShowFavorites, handleRemoveAllFavorites } = useContext(QuestionsContext);
+    const { language, setLanguage, favorites, setShowFavorites, handleRemoveAllFavorites, random, setRandom } = useContext(QuestionsContext);
 
     const handleLanguageChange = () => {
         setLanguage(language === "Es" ? "En" : language === "En" ? "Es" : "En")
@@ -36,8 +36,8 @@ export default function Home({ navigation }) {
                 disabled={favorites.length === 0}
             />
             <Button
-                title='remove'
-                onPress={async () => handleRemoveAllFavorites()}
+                title={`${random ? "Random" : "No Random"}`}
+                onPress={() => setRandom(!random)}
             />
         </View>
     )
