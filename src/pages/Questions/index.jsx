@@ -78,7 +78,7 @@ export default function Questions({ navigation }) {
                     await setFavorites(favoritesCopy);
                 }
             } else {
-                console.log("Favorites no exists.");
+                console.log("Favorites no exist.");
             }
         } catch(error) {
             console.error(error);

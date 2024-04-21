@@ -9,7 +9,7 @@ const QuestionsContext = React.createContext(null);
 
 const QuestionsProvider = ({ children }) => {
     const { getItem, setItem, mergeItem, removeItem } = useAsyncStorage('@connexa_favorites');
-    const [language, setLanguage] = React.useState("Es");
+    const [language, setLanguage] = React.useState("En");
     const [currentCuestionsList, setCurrentCuestionsList] = React.useState(EXAMPLE_QUESTIONS);
     const [currentCuestionIndex, setCurrentCuestionIndex] = React.useState(0);
     const currentCuestion = currentCuestionsList[currentCuestionIndex];
