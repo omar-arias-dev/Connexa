@@ -1,8 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Text, View } from "react-native";
+import { Button, Text, View, StyleSheet } from "react-native";
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import { QuestionsContext } from '../../contexts/QuestionsContext';
+
+import BasicButton from "../../components/BasicButton";
+
+import Divider from '../../components/Divider';
+import BackIcon from "./../../assets/icons/BackIcon";
+import HeartIcon from "./../../assets/icons/HeartIcon";
+import LeftIcon from '../../assets/icons/LeftIcon';
+import RightIcon from '../../assets/icons/RightIcon';
 
 export default function Questions({ navigation }) {
     const {
@@ -21,6 +29,73 @@ export default function Questions({ navigation }) {
     const { getItem, setItem, mergeItem, removeItem } = useAsyncStorage('@connexa_favorites');
     const [isFavorite, setIsFavorite] = useState(false);
 
+    const styles = StyleSheet.create({
+        questionsContainer: {
+            flex: 1,
+            backgroundColor: "#D2D2D2",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+        },
+        randomButtonContainer: {
+            elevation: 0,
+            backgroundColor: "#fff",
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            width: 50,
+            height: 50,
+        },
+        questionCardContainer: {
+            width: "95%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            backgroundColor: "#EEEEEE",
+            minHeight: "70%",
+            elevation: 10,
+            paddingBottom: 100,
+            paddingTop: 100,
+        },
+        questionCardText: {
+            width: "90%",
+            fontSize: 40,
+            textAlign: "center",
+        },
+        questionButtonsContainer: {
+            display: "flex",
+            flexDirection: "row",
+        },
+        previousButtonContainer: {
+            backgroundColor: isFirst() ? "#808080" : "#fff",
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            borderRadius: 25,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            width: 75,
+            height: 75,
+            elevation: 5,
+        },
+        nextButtonContainer: {
+            backgroundColor: isLast() ? "#808080" : "#fff",
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            borderRadius: 25,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            width: 75,
+            height: 75,
+            elevation: 5,
+        },
+    });
+
     useEffect(() => {
         setIsFavorite((favorites.length > 0) && favorites.includes(currentCuestion.id));
     });
@@ -31,15 +106,32 @@ export default function Questions({ navigation }) {
 
     useEffect(() => {
         navigation.setOptions({
-            title: showFavorites ? "Favorites" : "Questions",
+            title: showFavorites ? language === "Es" ? "Favoritos" : "Favorites" : language === "Es" ? "Preguntas" : "Questions",
+            headerTitleAlign: "center",
+            headerStyle: {
+                backgroundColor: "#fff",
+            },
             headerLeft: () => (
-                <Button
-                    title="Back"
-                    onPress={() => handleHeaderLeftNavigation()}
+                <BasicButton
+                    customFunction={() => handleHeaderLeftNavigation()}
+                    icon={<BackIcon fill="#000" width="25" height="25" />}
+                    containerStyle={styles.randomButtonContainer}
                 />
             ),
         });
     }, []);
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <BasicButton
+                    customFunction={async () => handleStoreFavorites()}
+                    icon={<HeartIcon filled={isFavorite} fill="#000" width="20" height="20" />}
+                    containerStyle={styles.randomButtonContainer}
+                />
+            ),
+        });
+    });
 
     const createFavoritesStoreIfNotExists = async () => {
         const storedFavorites = await getItem();
@@ -86,24 +178,27 @@ export default function Questions({ navigation }) {
     }
 
     return (
-        <View>
-            <Text>Questions</Text>
-            <Text>{language === "Es" ? currentCuestion.questionEs : currentCuestion.questionEn}</Text>
-            <Button
-                title="Favorite"
-                onPress={async () => handleStoreFavorites()}
-            />
-            <Text>{isFavorite ? "Favorite" : "No Favorite"}</Text>
-            <Button
-                title="Previous"
-                onPress={() => handleQuestionPreviousChange()}
-                disabled={isFirst()}
-            />
-            <Button
-                title="Next"
-                onPress={() => handleQuestionNextChange()}
-                disabled={isLast()}
-            />
+        <View style={styles.questionsContainer}>
+            <Text>{language === "En" ? "Question" : "Pregunta"} #{currentCuestion.id}</Text>
+            <View style={styles.questionCardContainer}>
+                <Divider width={"80%"} />
+                <Text style={styles.questionCardText}>{language === "Es" ? currentCuestion.questionEs : currentCuestion.questionEn}</Text>
+                <Divider width={"80%"} />
+            </View>
+            <View style={styles.questionButtonsContainer}>
+                <BasicButton
+                    customFunction={async () => handleQuestionPreviousChange()}
+                    icon={<LeftIcon fill="#000" width="20" height="20" />}
+                    containerStyle={styles.previousButtonContainer}
+                    disabled={isFirst()}
+                />
+                <BasicButton
+                    customFunction={async () => handleQuestionNextChange()}
+                    icon={<RightIcon fill="#000" width="20" height="20" />}
+                    containerStyle={styles.nextButtonContainer}
+                    disabled={isLast()}
+                />
+            </View>
             {
                 showFavorites && (
                     <Button

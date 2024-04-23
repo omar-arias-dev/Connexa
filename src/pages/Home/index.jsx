@@ -50,7 +50,7 @@ export default function Home({ navigation }) {
             width: 200,
             borderRadius: 10,
             borderWidth: 2,
-            borderColor: isEn ? EN_COLOR : ES_COLOR,
+            borderColor: "#fff",
             overflow: 'hidden',
         },
         toggleLanguageTextContainer: {
@@ -70,6 +70,8 @@ export default function Home({ navigation }) {
             elevation: 8,
             backgroundColor: "#D56062",
             borderRadius: 10,
+            borderWidth: 2.5,
+            borderColor: "#fff",
             paddingVertical: 25,
             paddingHorizontal: 12,
             width: 200,
@@ -91,6 +93,8 @@ export default function Home({ navigation }) {
             elevation: 8,
             backgroundColor: favorites.length === 0 ? "#3C161F" : "#6B2737",
             borderRadius: 10,
+            borderWidth: 2.5,
+            borderColor: favorites.length === 0 ? "#808080" : "#fff",
             paddingVertical: 25,
             paddingHorizontal: 12,
             display: "flex",
@@ -109,6 +113,8 @@ export default function Home({ navigation }) {
             elevation: 8,
             backgroundColor: !random ? "#3C161F" : "#6B2737",
             borderRadius: 10,
+            borderWidth: 2.5,
+            borderColor: !random ? "#808080" : "#fff",
             paddingVertical: 10,
             paddingHorizontal: 12,
             display: "flex",
@@ -154,7 +160,7 @@ export default function Home({ navigation }) {
             <View style={styles.favoritesAndShuffleContainer}>
                 <BasicButton
                     customFunction={handleFavoriteQuestionsPageNavigate}
-                    text="My Favorites"
+                    text={language === "En" ? "My Favorites" : "Mis Favoritos"}
                     icon={<HeartIcon fill={favorites.length === 0 ? "#808080" : "#fff"} width="20" height="20" />}
                     containerStyle={styles.favoritesButtonContainer}
                     textStyle={styles.favoritesButtonText}
@@ -174,7 +180,7 @@ export default function Home({ navigation }) {
             </View>
             <BasicButton
                 customFunction={handleQuestionsPageNavigate}
-                text="Connect"
+                text={language === "En" ? "Connect" : "Conecta"}
                 icon={<ConnectIcon fill="#fff" width="20" height="20" />}
                 containerStyle={styles.connectButtonContainer}
                 textStyle={styles.connectButtonText}
