@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 import { QuestionsContext } from '../../contexts/QuestionsContext';
@@ -11,6 +11,7 @@ import BackIcon from "./../../assets/icons/BackIcon";
 import HeartIcon from "./../../assets/icons/HeartIcon";
 import LeftIcon from '../../assets/icons/LeftIcon';
 import RightIcon from '../../assets/icons/RightIcon';
+import TearFilesIcon from '../../assets/icons/TearFilesIcon';
 
 export default function Questions({ navigation }) {
     const {
@@ -67,6 +68,9 @@ export default function Questions({ navigation }) {
         questionButtonsContainer: {
             display: "flex",
             flexDirection: "row",
+            width: "60%",
+            justifyContent: "space-around",
+            alignItems: "center",
         },
         previousButtonContainer: {
             backgroundColor: isFirst() ? "#808080" : "#fff",
@@ -94,6 +98,27 @@ export default function Questions({ navigation }) {
             height: 75,
             elevation: 5,
         },
+        headerContainer: {
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+        },
+        deleteAllFavoritesButtonContainer: {
+            elevation: 0,
+            paddingVertical: 10,
+            paddingHorizontal: 12,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            width: 50,
+            height: 50,
+        },
+        headerQuestionNumber: {
+            color: "#000",
+        }
     });
 
     useEffect(() => {
@@ -179,7 +204,20 @@ export default function Questions({ navigation }) {
 
     return (
         <View style={styles.questionsContainer}>
-            <Text>{language === "En" ? "Question" : "Pregunta"} #{currentCuestion.id}</Text>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerQuestionNumber}>{language === "En" ? "Question" : "Pregunta"} #{currentCuestion.id}</Text>
+                {
+                    showFavorites && (
+                        <BasicButton
+                            customFunction={async () => {
+                                await navigation.navigate("DeleteFavoritesModal");
+                            }}
+                            icon={<TearFilesIcon fill="#000" width="25" height="25" />}
+                            containerStyle={styles.deleteAllFavoritesButtonContainer}
+                        />
+                    )
+                }
+            </View>
             <View style={styles.questionCardContainer}>
                 <Divider width={"80%"} />
                 <Text style={styles.questionCardText}>{language === "Es" ? currentCuestion.questionEs : currentCuestion.questionEn}</Text>
@@ -199,18 +237,6 @@ export default function Questions({ navigation }) {
                     disabled={isLast()}
                 />
             </View>
-            {
-                showFavorites && (
-                    <Button
-                        title="Delete my Favorite Questions"
-                        onPress={async () => {
-                            await handleRemoveAllFavorites();
-                            await navigation.goBack();
-                            setShowFavorites(false);
-                        }}
-                    />
-                )
-            }
         </View>
     );
 }
